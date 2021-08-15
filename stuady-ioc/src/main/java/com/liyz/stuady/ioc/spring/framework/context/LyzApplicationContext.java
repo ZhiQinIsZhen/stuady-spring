@@ -134,10 +134,14 @@ public class LyzApplicationContext {
         String className = beanDefinition.getBeanClassName();
         Object instance = null;
         try {
-            Class<?> clazz = Class.forName(className);
-            //2、默认的类名首字母小写
-            instance = clazz.newInstance();
-            this.factoryBeanObjectCache.put(beanName, instance);
+            if (this.factoryBeanInstanceCache.containsKey(beanName)) {
+                instance = this.factoryBeanInstanceCache.get(beanName);
+            } else {
+                Class<?> clazz = Class.forName(className);
+                //2、默认的类名首字母小写
+                instance = clazz.newInstance();
+                this.factoryBeanObjectCache.put(beanName, instance);
+            }
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -146,5 +150,13 @@ public class LyzApplicationContext {
 
     public Object getBean(Class beanClass){
         return getBean(beanClass.getName());
+    }
+
+    public int getBeanDefitionCount() {
+        return this.beanDefinitionMap.size();
+    }
+
+    public String[] getBeanDefitionNames() {
+        return this.beanDefinitionMap.keySet().toArray(new String[beanDefinitionMap.size()]);
     }
 }

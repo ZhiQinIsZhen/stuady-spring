@@ -4,6 +4,7 @@ import com.liyz.stuady.ioc.spring.framework.annotation.LyzController;
 import com.liyz.stuady.ioc.spring.framework.annotation.LyzRequestMapping;
 import com.liyz.stuady.ioc.spring.framework.annotation.LyzRequestParam;
 import com.liyz.stuady.ioc.spring.framework.context.LyzApplicationContext;
+import com.sun.xml.internal.bind.v2.model.core.ID;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -30,7 +31,7 @@ public class LyzDispatchServlet extends HttpServlet {
     private LyzApplicationContext applicationContext;
 
     //IoC容器，key默认是类名首字母小写，value就是对应的实例对象
-    private Map<String, Object> ioc = new HashMap<>();
+//    private Map<String, Object> ioc = new HashMap<>();
 
     private Map<String, Method> handlerMapping = new HashMap<String, Method>();
 
@@ -95,7 +96,8 @@ public class LyzDispatchServlet extends HttpServlet {
         //暂时硬编码
         String beanName = toLowerFirstCase(method.getDeclaringClass().getSimpleName());
         //赋值实参列表
-        method.invoke(ioc.get(beanName),paramValues);
+//        method.invoke(ioc.get(beanName),paramValues);
+        method.invoke(applicationContext.getBean(beanName),paramValues);
     }
 
     @Override
@@ -111,11 +113,14 @@ public class LyzDispatchServlet extends HttpServlet {
     }
 
     private void doInitHandlerMapping() {
-        if(ioc.isEmpty()){ return;}
-
-        for (Map.Entry<String,Object> entry : ioc.entrySet()) {
-            Class<?> clazz = entry.getValue().getClass();
-
+//        if(ioc.isEmpty()){ return;}
+        if (this.applicationContext.getBeanDefitionCount() == 0) {
+            return;
+        }
+//        for (Map.Entry<String,Object> entry : ioc.entrySet()) {
+        for (String beanName : this.applicationContext.getBeanDefitionNames()) {
+//            Class<?> clazz = entry.getValue().getClass();
+            Class<?> clazz = applicationContext.getBean(beanName).getClass();
             if(!clazz.isAnnotationPresent(LyzController.class)){ continue; }
 
 
