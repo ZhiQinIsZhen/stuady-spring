@@ -14,7 +14,6 @@ import java.util.Date;
  * @version 1.0.0
  * @date 2021/8/15 20:17
  */
-@Slf4j
 @LyzService
 public class QueryServiceImpl implements IQueryService {
 
@@ -23,7 +22,7 @@ public class QueryServiceImpl implements IQueryService {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String time = sdf.format(new Date());
         String json = "{name:\"" + name + "\",time:\"" + time + "\"}";
-        log.info("这是在业务方法中打印的：" + json);
+        System.out.println("这是在业务方法中打印的：" + json);
         return json;
     }
 }
