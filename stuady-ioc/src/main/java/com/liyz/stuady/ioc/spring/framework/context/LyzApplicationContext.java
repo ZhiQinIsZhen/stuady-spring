@@ -58,7 +58,7 @@ public class LyzApplicationContext {
     private void doRegistBeanDefinition(List<LyzBeanDefinition> beanDefinitions) throws Exception {
         for (LyzBeanDefinition beanDefinition : beanDefinitions) {
             if(this.beanDefinitionMap.containsKey(beanDefinition.getFactoryBeanName())){
-                throw new Exception("The " + beanDefinition.getFactoryBeanName() + "is exists");
+                throw new Exception("The " + beanDefinition.getFactoryBeanName() + " is exists");
             }
             beanDefinitionMap.put(beanDefinition.getFactoryBeanName(),beanDefinition);
             beanDefinitionMap.put(beanDefinition.getBeanClassName(),beanDefinition);
@@ -66,7 +66,7 @@ public class LyzApplicationContext {
     }
 
     //Bean的实例化，DI是从而这个方法开始的
-    public Object getBean(String beanName){
+    public Object   getBean(String beanName){
         //1、先拿到BeanDefinition配置信息
         LyzBeanDefinition beanDefinition = this.beanDefinitionMap.get(beanName);
         //2、反射实例化newInstance();
@@ -134,8 +134,8 @@ public class LyzApplicationContext {
         String className = beanDefinition.getBeanClassName();
         Object instance = null;
         try {
-            if (this.factoryBeanInstanceCache.containsKey(beanName)) {
-                instance = this.factoryBeanInstanceCache.get(beanName);
+            if (this.factoryBeanObjectCache.containsKey(beanName)) {
+                instance = this.factoryBeanObjectCache.get(beanName);
             } else {
                 Class<?> clazz = Class.forName(className);
                 //2、默认的类名首字母小写
