@@ -34,6 +34,7 @@ public class MyAction {
         out(response,result);
     }
 
+
     @LyzRequestMapping("/add*.json")
     public void add(HttpServletRequest request,HttpServletResponse response,
                     @LyzRequestParam("name") String name,@LyzRequestParam("addr") String addr){
